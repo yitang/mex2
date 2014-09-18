@@ -1,0 +1,17 @@
+{
+    "contents" : "BigNumber <- 10^40\nWeeNumber <- 10^(-10)\naLow <- -1 + 10^(-10)\nobj <- function(para, y, y0, ...){\n  BigNumber <- 10^40\n  WeeNumber <- 10^(-10)\n  aLow <- -1 + 10^(-10)\n  a <- para[1]\n  b <- para[2]\n  z <- (y-y0*a)/y0^b\n  m <- mean(z)\n  s <- sd(z)\n  mu <- y0*a + m * y0^b\n  sig <- s * y0^b\n  if(a < aLow[1] | s < WeeNumber | a > 1-WeeNumber  | b > 1-WeeNumber)\n    return(1e40)\n  res <- sum(0.5 * log(2*pi) + log(sig) + 0.5 * ((y - mu)/sig)^2)\n  if (is.infinite(res))\n    return(sign(res))\n  return(res)\n} \n\nHTMLE_obj <- function(para, yi, yj){\n  BigNumber <- 10^40\n  WeeNumber <- 10^(-10)\n  aLow <- -1 + 10^(-10)\n  a <- para[1]\n  b <- para[2]\n\n  z = (yj - yi * a ) / yi ^ b\n  m <- mean(z)\n  s <- sd(z)\n       if(a < aLow[1] | s < WeeNumber | a > 1-WeeNumber  | b > 1-WeeNumber)\n          return(1e40)\n  \n  nllh <- log(s * yi^b) + 1/2 * ((yj - a * yi - m * yi ^ b) / (s * yi ^ b))^2\n  nllh <- sum(nllh)\n  return(nllh)\n}\n\nHTMLE_obj2 <- function(para, yi, yj){\n  BigNumber <- 10^40\n  WeeNumber <- 10^(-10)\n  aLow <- -1 + 10^(-10)\n  a <- para[1]\n  b <- para[2]\n  \n##  if (a < -1 | a > 1 | b >= 1)\n##    return(1e4)\n  z = (yj - yi * a ) / yi ^ b\n  m <- mean(z)\n  s <- sd(z)\n      if(a < aLow[1] | s < WeeNumber | a > 1-WeeNumber  | b > 1-WeeNumber)\n          return(1e40)\n  \n  llh <- 0.5 * log(2 * pi) + log(s * yi^b) + 1/2 * ((yj - a * yi - m * yi ^ b) / (s * yi ^ b))^2\nllh <-  log(s * yi^b) + 1/2 * ((yj - a * yi - m * yi ^ b) / (s * yi ^ b))^2\n  nllh <- -sum(llh)\n  return(-nllh)\n}\n",
+    "created" : 1411040166289.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "4223586513",
+    "id" : "80700278",
+    "lastKnownWriteTime" : 1411046753,
+    "path" : "C:/vmshare/texmex_hack/HTModel/R/refile.R",
+    "project_path" : "R/refile.R",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "source_on_save" : false,
+    "type" : "r_source"
+}

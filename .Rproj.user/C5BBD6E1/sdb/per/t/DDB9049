@@ -1,0 +1,17 @@
+{
+    "contents" : "// // block shuffering in Cpp\n// block_shuffer(std::vector<double> x, std::vector<int> id){\n//   auto p0 = id.begin();\n//   auto p1 = id.end();\n//   std::set<int> u_id(p0, p1);\n//   std::vector<double> xx;\n//   for (const auto& this_id : u_id){\n//     auto pp = equal_range(p0, p1, this_id);\n//     copy(x.begin() + (pp - p0),\n//    x.begin() + (p1 - p0),\n//    back_insert(xx));\n//   }\n//   return xx;\n// }\n\n\n// // TODO: make this function generic\n// // Created on 02/Jul/2014\n// // Author Yi\n// // functionality: create unique ids for 0s and 1s. for example\n// // OT series: 0, 0, 0, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0,\n// // unique id: 0, 0, 0, 1, 1, 1, 2, 2, 3, 3, 3, 3, 3, 4, 4, 4,\n// #include <Rcpp.h>\n// #include <iostream>\n// #include <vector>\n// #include <algorithm>\n// #include <iterator>\n// // [[Rcpp::plugins(cpp11)]]\n// using namespace std;\n// // [[Rcpp::export]]\n// std::vector<int> unique_id_along_01 (std::vector<int> ind){\n//   int count = 1 ;\n//   auto i0 = ind.begin();\n//   auto i1 = ind.end();\n//   auto p1 = find(i0, i1, 1); // find first 1;\n//   auto p0 = find(p1, i1, 0); // find first 0 after first 1.\n//   while (p1 != i1){\n//     fill(p1, p0, count++);\n//     p1 = find(p0, i1, 1);\n//     fill(p0, p1 , count++);\n//     p0 = find(p1, i1, 0);\n//   }\n// return ind;\n// }\n\n#include <Rcpp.h>\n#include <cmath>\nusing namespace Rcpp;\n//\n// [[Rcpp::export]]\ndouble obj_cpp(NumericVector para, NumericVector yi, NumericVector yj){\n  static double aLow = -1 + pow(10, -10);\n  static double BigNumber = pow(10, 40);\n  static double WeeNumber = pow(10, -10);\n  double a = para[0];\n  double b = para[1];\n  NumericVector z = (yj - yi * a ) / pow(yi, b);\n  double m = mean(z);\n  double s = sd(z);\n  NumericVector mu = yi * a + m * pow(yi, b);\n  NumericVector sig = s * pow(yi, b);\n  if (a < aLow | s < WeeNumber | a > 1 - WeeNumber | b > 1 - WeeNumber)\n    return BigNumber;\n  double res = sum(0.5 * log(2*PI) + log(sig) + 0.5 * pow((yj - mu)/sig, 2));\n  if (is_infinite(NumericVector::create(res))[0] == 1)\n    return(sign(NumericVector::create(res))[0] * BigNumber);\n  return(res);\n}\n ",
+    "created" : 1411044723360.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2486112863",
+    "id" : "DDB9049",
+    "lastKnownWriteTime" : 1411052596,
+    "path" : "C:/vmshare/texmex_hack/HTModel/src/refile.cpp",
+    "project_path" : "src/refile.cpp",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "source_on_save" : false,
+    "type" : "cpp"
+}
